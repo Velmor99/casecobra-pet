@@ -49,14 +49,12 @@ const DesignConfigurator = ({
   const { toast } = useToast();
   const router = useRouter();
 
-  const { mutate: saveConfig } = useMutation({
+  const { mutate: saveConfig, isPending } = useMutation({
     mutationKey: ["save-config"],
     mutationFn: async (args: SaveConfigArgs) => {
-      setIsLoading(true);
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
     },
     onError: () => {
-      setIsLoading(false);
       toast({
         title: "Something went wrong",
         description: "There was an error on our end. Please try again.",
@@ -89,8 +87,6 @@ const DesignConfigurator = ({
     x: 150,
     y: 205,
   });
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const phoneCaseRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -401,9 +397,9 @@ const DesignConfigurator = ({
                 )}
               </p>
               <Button
-                isLoading={isLoading}
-                disabled={isLoading}
-                loadingText="loading"
+                isLoading={isPending}
+                disabled={isPending}
+                loadingText="Saving"
                 onClick={() =>
                   saveConfig({
                     configId,
