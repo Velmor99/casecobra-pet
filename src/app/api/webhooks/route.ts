@@ -94,7 +94,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ result: event, ok: true });
   } catch (error) {
     console.error(error);
-    // send this to sentry
 
     return NextResponse.json(
       { message: "Something went wrong", ok: false },
